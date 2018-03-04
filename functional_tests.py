@@ -1,12 +1,7 @@
-from selenium import webdriver
 import unittest
+from selenium import webdriver
 from historymap.urls import urlpatterns
-
-browser = webdriver.Firefox()
-
-browser.get('http://localhost:8000')
-
-assert 'HistoryMap' in browser.title
+from time import sleep
 
 class NewVisitorTest(unittest.TestCase):
     
@@ -18,9 +13,9 @@ class NewVisitorTest(unittest.TestCase):
 
     def test_land_page_is_okay(self):
         self.browser.get('http://localhost:8000')
-        
+        sleep(40)
         self.assertIn('HistoryMap', self.browser.title)
-        self.fail('Finish the Test')
+        #self.fail('Finish the Test')
 
 """
 def _get_reversed_urlpatterns(urlspatterns=urlpatterns):

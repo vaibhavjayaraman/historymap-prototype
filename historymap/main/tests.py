@@ -9,5 +9,5 @@ class HomePageTest(TestCase):
     def test_root_url_resolves_to_home_page_view(self):
         response = self.client.get('/')
         html = response.content.decode('utf8')
-        self.assertTemplateUsed(response, html)
+        self.assertTemplateUsed(response, "main/home.html")
 
