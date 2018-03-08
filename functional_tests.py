@@ -13,7 +13,7 @@ class NewVisitorTest(unittest.TestCase):
 
     def test_land_page_is_okay(self):
         self.browser.get('http://localhost:8000')
-        sleep(40)
+        #sleep(40)
         self.assertIn('HistoryMap', self.browser.title)
         #self.fail('Finish the Test')
 
