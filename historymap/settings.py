@@ -75,16 +75,7 @@ WSGI_APPLICATION = 'historymap.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'historymap',
-        'USER': 'vaibhavj',
-        'PASSWORD': 'ocfuser',
-        'HOST': 'localhost',
-        'PORT': '';
-    }
-}
+DATABASES = {}
 
 
 # Internationalization
