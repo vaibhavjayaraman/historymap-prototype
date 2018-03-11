@@ -1,19 +1,18 @@
 var map;
-$("map").append("Append test");
 function initMap() {
 	var latitude = 59.925580
 	var longitude = 30.295948
-	map = new google.maps.Map(document.getElementById('map'), {
+	map = new google.maps.Map(document.getElementById('#map'), {
 		center: {lat: latitude, lng: longitude},
 		zoom: 8 
 	});
 }
 $(document).ready(function() {
-	var api_key = 'AIzaSyBByYGtP4MGtNAd9-SxOPdXk5WJML9b1gA'
+	var api_key = 'AIzaSyBByYGtP4MGtNAd9-SxOPdXk5WJML9b1gA';
     var js_file = document.createElement('script');
     js_file.type = 'text/javascript';
     js_file.src = 'https://maps.googleapis.com/maps/api/js?key=api_key&callback=initMap';
-    $("map").append(js_file);
+    $("#map").append(js_file);
 }
 
 function calculateCoordinates(pnt) {
@@ -28,7 +27,6 @@ function calculateCoordinates(pnt) {
 
 $(window).load(function() {
     /**Updates map with article markers if mouse has moved**/
-
     google.maps.event.addListener(map, 'click', function (event) {
         /**checks to make sure map.zoom is bigger than 16 */
         if (map.zoom > 16) {
