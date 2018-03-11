@@ -1,6 +1,3 @@
-alert("qwerty");
-
-
 var map;
 $("map").append("Append test");
 function initMap() {
@@ -19,19 +16,20 @@ $(document).ready(function() {
     $("map").append(js_file);
 }
 
+function calculateCoordinates(pnt) {
+    /**Returns information about point **/
+    var obj = {
+        lat: pnt.lat().toFixed(4),
+        lng = pnt.lng().toFixed(4),
+        zoom: map.zoom,
+    }
+    return obj;
+}
+
 $(window).load(function() {
     /**Updates map with article markers if mouse has moved**/
-    function calculateCoordinates(pnt) {
-        /**Returns information about point **/
-        var obj = {
-            lat: pnt.lat().toFixed(4),
-            lng = pnt.lng().toFixed(4),
-            zoom: map.zoom,
-        }
-        return obj;
-    }
 
-    google.maps.event.addListener(map, 'mousemove', function (event) {
+    google.maps.event.addListener(map, 'click', function (event) {
         /**checks to make sure map.zoom is bigger than 16 */
         if (map.zoom > 16) {
         var map_state = calculateCoordinates(event.latlng);
@@ -64,5 +62,5 @@ $(window).load(function() {
         });
         }
     });
-}
+});
 
