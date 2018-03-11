@@ -34,30 +34,33 @@ $(document).ready(function() {
         /**checks to make sure map.zoom is bigger than 16 */
         if (map.zoom > 16) {
         var map_state = calculateCoordinates(event.latlng);
-    
-            $.ajax({
-                type: 'POST',
-                url: "/main/generate_wiki_articles.py",
-                data: {lat: map_state.lat, lng: map_state.lng, zoom: map.zoom}
-                dataType: "json";
-                context: document.body,
-                global: false,
-                async: false,
-                success: function(data) {
-                    function plotMarkers(markers) {
-                        markers.forEach(function (marker) {
-                            var position = new google.maps.LatLng(
-                                marker.lat, 
-                                marker.lng);
-                            var marker = new google.maps.Marker({
-                                position: position,
-                                map: map,
-                                animation: google.maps.Animation.DROP
-                            });
+        var lat = map_state.lat;
+        var lng = map_state.lng;
+        var radius = 6;
+        var file_return_limit = 50;
+        $.ajax({
+            type: 'POST',
+            url: "api.php?action=query&list=geosearch&gscoord=${lat}|${lng}&gsradius=${radius}&gslimit=${file_return_limit}",
+            data: {lat: map_state.lat, lng: map_state.lng, zoom: map.zoom},
+            dataType: "json";
+            context: document.body,
+            global: false,
+            async: false,
+            success: function(data) {
+                function plotMarkers(markers) {
+                    markers.forEach(function (marker) {
+                        var position = new google.maps.LatLng(
+                            marker.lat, 
+                            marker.lng);
+                        var marker = new google.maps.Marker({
+                            position: position,
+                            map: map,
+                            animation: google.maps.Animation.DROP
                         });
-                    }
+                    });
                 }
-            });
+            }
+        });
         }
     });
 }
