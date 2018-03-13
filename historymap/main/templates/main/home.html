@@ -3,18 +3,19 @@
 <html>
     <head>
         <title> HistoryMap</title>
+        <link rel="stylesheet" href= "{% static "main/css/home.css" %}"> 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
         <div id="beginning">
             Where do you want to learn about today?
         </div>
-        <div id="map"> 
+        <div id="map" src="{% static "main/css/home.css" %}"></script>
         </div>
-    <script src="{% static "main/js/map_init.js" %}"></script>
         <div id="test">
             Past script
         </div>
     
     </body>
 </html>
+<script src="{% static "main/js/map_init.js" %}"></script>
