@@ -35,33 +35,42 @@ $(document).ready(function() {
                 var lng = pos.lng();
                 var radius = 1000;
                 var file_return_limit = 10; 
+                url = "https://en.wikipedia.org/w/api.php?" + 
+                    "action=query&origin=*&list=geosearch&gscoord=" + lat + "|" + lng +
+                    "&gsradius=" + radius + "&gslimit=" + file_return_limit +
+                    "&prop=info|extracts&inprop=url" +
+                    "&format=json";
                 $.ajax({
                     type: 'POST',
-                    url: "https://en.wikipedia.org/w/api.php?origin=*&action=query&list=geosearch&gscoord="+ lat +"|" + lng +"&gsradius=" + radius +"&gslimit=" + file_return_limit + "&format=json",
-                    data: {lat: lat, lng: lng, zoom: zoom},
+                    url: url,
                     dataType: "json",
                     context: document.body,
                     global: false,
                     async: true,
                     crossDomain:true,
                     success: function(data) {
-                        alert(url);
-                        alert(data);
-                        alert(Object.keys(data));
-                        alert(Object.values(data));
-                        var parsedData = JSON.parse(data);
-                        var articles = parsedData.query.geosearch;
+                        var parsed_data = data
+                        var articles = parsed_data.query.geosearch;
                         for (var i = 0; i < articles.length; i++) {
                             var article = articles[i];
-                            new google.maps.Marker({
-                                position: {lat: article.lat, lng: article.lng},
+                            marker = new google.maps.Marker({
+                                position: {lat: article.lat, lng: article.lon},
                                 map: map,
                                 title: article.title,
                             });
+                            var infowindow = new google.maps.InfoWindow();
+                            marker.content =  "https://en.wikipedia.org/?curid="
+                                        + article.pageid;
+                            google.maps.event.addListener(marker, "mouseover", (function(marker) {
+                                return function() {
+                                    infowindow.setContent(this.content);
+                                    infowindow.open(map, this);
+                                }
+                            })(marker));
                         }
                     }
                 });
             }
-        })
-    })
+        });
+    });
 });
