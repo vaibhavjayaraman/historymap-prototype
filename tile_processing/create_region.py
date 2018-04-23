@@ -4,6 +4,8 @@ TILE_PICTURE_LOCATIONS = "test_pictures/"
 ORIGINAL = "/original/"
 EDGE = "/edge/"
 TEXT = "/text/"
+NAMES = "/names/"
+EDGE_ON_TEXT = "/edge_on_text/"
 
 def create_region(region):
     """Creates directory  and subdirectories for maps of region. """
