@@ -2,6 +2,7 @@ var map;
 var latitude; 
 var longitude;
 var zoom;
+var current_url;
 
 /**Initializes map. **/
 function initMap() {
@@ -18,9 +19,30 @@ function initMap() {
     }).addTo(map);
 }
 
+/**Function retrieves wikipedia article first paragraph. In browser Cache at a later time */
+function extract_wikipedia_head(title) {
+    var extract;
+    title = title.replace(/ /g,"_");
+    url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + title
+    $.ajax({
+        type: 'GET',
+        url: url,
+        datatype: "json",
+        context: document.body,
+        global: false,
+        async: false,
+        crossdomain:true,
+        success: function(data) {
+            extract = data.extract;
+        }
+    });
+    return extract;
+}
+
+
+
 /** Loads and places wikipedia articles on map. **/
 function wiki_call(url) {
-	alert(url);
     $.ajax({
         type: 'post',
         url: url,
@@ -42,8 +64,11 @@ function wiki_call(url) {
                 var url = "https://en.wikipedia.org/?curid="
                             + article.pageid;
 				var marker_popup = function(marker, url, title) {
+                    var extract = extract_wikipedia_head(title);
 					return function() {
-						marker.bindPopup(title.bold() + "\n" + url).openPopup();
+                        current_url = url;
+						marker.bindPopup('<button class="article">' + title.bold() + '</button><p>' 
+                         + extract + "<\p>").openPopup();
 					}
 				};
                 marker.on('mouseover', marker_popup(marker, url, title)); 
@@ -54,6 +79,7 @@ function wiki_call(url) {
 
 initMap();
 
+extract_wikipedia_head("Google");
 /**Updates map with article markers if mouse has moved. **/
 $(document).ready(function() { 
     $(window).on('load', function() {
@@ -71,6 +97,9 @@ $(document).ready(function() {
                     "&prop=info|extracts&inprop=url" +
                     "&format=json";
                 wiki_call(url);
+            $('#map').on('click', '.article', function() {
+                window.open(current_url, '_blank');
+            });
             }
         });
     });
