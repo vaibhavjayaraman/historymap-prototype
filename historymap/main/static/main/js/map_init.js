@@ -3,6 +3,8 @@ var latitude;
 var longitude;
 var zoom;
 var current_url;
+var current_title;
+var win;
 
 /**Initializes map. **/
 function initMap() {
@@ -39,6 +41,12 @@ function extract_wikipedia_head(title) {
     return extract;
 }
 
+function article_ajax_call(url, title, request_type) {
+	$.ajax({
+		type: 'post',
+		url: 
+	});
+}
 
 
 /** Loads and places wikipedia articles on map. **/
@@ -58,15 +66,18 @@ function wiki_call(url) {
                 var article = articles[i];
                 var lat = article.lat;
                 var lon = article.lon;
-				var title = article.title;
+		var title = article.title;
                 var marker = L.marker([lat,lon]);
                 marker.addTo(map);
                 var url = "https://en.wikipedia.org/?curid="
                             + article.pageid;
-				var marker_popup = function(marker, url, title) {
+		article_ajax_call(url, title,'generation');
+		var marker_popup = function(marker, url, title) {
                     var extract = extract_wikipedia_head(title);
 					return function() {
-                        current_url = url;
+                        			current_url = url;
+						current_title = title;
+						article_ajax_call(url, title, 'hover');
 						marker.bindPopup('<button class="article">' + title.bold() + '</button><p>' 
                          + extract + "<\p>").openPopup();
 					}
@@ -79,14 +90,13 @@ function wiki_call(url) {
 
 initMap();
 
-extract_wikipedia_head("Google");
 /**Updates map with article markers if mouse has moved. **/
 $(document).ready(function() { 
     $(window).on('load', function() {
         map.on('click', function(e) {
         /**checks to make sure map.zoom is bigger than 16 */
             var zoom = map.getZoom();
-            if (zoom > 16) {
+            if (zoom > 7) {
                 var lat = e.latlng.lat;
                 var lng = e.latlng.lng;
                 var radius = 1000;
@@ -98,7 +108,11 @@ $(document).ready(function() {
                     "&format=json";
                 wiki_call(url);
             $('#map').on('click', '.article', function() {
-                window.open(current_url, '_blank');
+                win = window.open(current_url, '_blank');
+		article_ajax_call(url, title, 'click');
+		setTimeout(function() {
+			win.close();
+		}, 500);
             });
             }
         });
