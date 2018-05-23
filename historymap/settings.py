@@ -77,8 +77,8 @@ WSGI_APPLICATION = 'historymap.wsgi.application'
 
 DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'hmaptest',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'historymaptest',
             'USER': 'hmap',
             'PASSWORD': 'merenskyth',
             'HOST': 'localhost',
