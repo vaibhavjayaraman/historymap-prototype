@@ -25,7 +25,7 @@ SECRET_KEY = '@^rs#2$7ylxg1hcu!jr0767)982qwm&4&pp672#3$((^pslg*x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['oilspill.ocf.berkeley.edu', '0.0.0.0']
 
 
 # Application definition
@@ -78,6 +78,9 @@ WSGI_APPLICATION = 'historymap.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
+            'OPTIONS': {
+                'sql_mode': 'traditional',
+            },
             'NAME': 'historymaptest',
             'USER': 'hmap',
             'PASSWORD': 'merenskyth',

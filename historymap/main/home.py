@@ -1,5 +1,5 @@
 from django.shortcuts import render
-#from historymap.main.models import Article
+from historymap.main.models import Article
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 
