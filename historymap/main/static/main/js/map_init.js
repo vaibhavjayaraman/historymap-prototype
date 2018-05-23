@@ -25,7 +25,7 @@ function initMap() {
 function extract_wikipedia_head(title) {
     var extract;
     title = title.replace(/ /g,"_");
-    url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + title
+    var url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + title
     $.ajax({
         type: 'GET',
         url: url,
@@ -41,13 +41,23 @@ function extract_wikipedia_head(title) {
     return extract;
 }
 
-function article_ajax_call(url, title, request_type) {
+function article_ajax_call(url_data, title, request_type) {
+    	var wikipedia_title = "https://en.wikipedia.org/api/rest_v1/page/summary/" + title.replace(/ /g, "_");
 	$.ajax({
 		type: 'post',
-		url: 
+		url:"",
+		aysnc: true, 
+		data: {
+			'url' : url_data,
+			'title' : title,
+			'interaction_type': request_type,
+			'title_for_wikipedia' : wikipedia_title 
+		},
+		failure: function(data) {
+			alert("Article Ajax Call Fail");
+		}
 	});
 }
-
 
 /** Loads and places wikipedia articles on map. **/
 function wiki_call(url) {
@@ -73,7 +83,7 @@ function wiki_call(url) {
                             + article.pageid;
 		article_ajax_call(url, title,'generation');
 		var marker_popup = function(marker, url, title) {
-                    var extract = extract_wikipedia_head(title);
+        		var extract = extract_wikipedia_head(title);
 					return function() {
                         			current_url = url;
 						current_title = title;
@@ -94,7 +104,7 @@ initMap();
 $(document).ready(function() { 
     $(window).on('load', function() {
         map.on('click', function(e) {
-        /**checks to make sure map.zoom is bigger than 16 */
+        /**checks to make sure map.zoom is bigger than 7*/
             var zoom = map.getZoom();
             if (zoom > 7) {
                 var lat = e.latlng.lat;
@@ -109,7 +119,7 @@ $(document).ready(function() {
                 wiki_call(url);
             $('#map').on('click', '.article', function() {
                 win = window.open(current_url, '_blank');
-		article_ajax_call(url, title, 'click');
+		article_ajax_call(current_url, current_title, 'click');
 		setTimeout(function() {
 			win.close();
 		}, 500);
