@@ -1,0 +1,64 @@
+<VRTDataset rasterXSize="1461" rasterYSize="771">
+  <SRS>PROJCS["unnamed",GEOGCS["unnamed ellipse",DATUM["unknown",SPHEROID["unnamed",6378137,0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Mercator_2SP"],PARAMETER["standard_parallel_1",0],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]]]</SRS>
+  <GeoTransform> -1.1951390031301216e+06,  1.6564235005521764e+03,  0.0000000000000000e+00,  5.4394514180469243e+06,  0.0000000000000000e+00, -1.6564235005521764e+03</GeoTransform>
+  <VRTRasterBand dataType="Byte" band="1">
+    <NoDataValue>0</NoDataValue>
+    <ColorInterp>Red</ColorInterp>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">0</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="1461" RasterYSize="771" DataType="Byte" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <DstRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">test_pictures/iberia/geotiff/iberiageo.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="1461" RasterYSize="771" DataType="Byte" BlockXSize="1461" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <DstRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Byte" band="2">
+    <NoDataValue>0</NoDataValue>
+    <ColorInterp>Green</ColorInterp>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">0</SourceFilename>
+      <SourceBand>2</SourceBand>
+      <SourceProperties RasterXSize="1461" RasterYSize="771" DataType="Byte" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <DstRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">test_pictures/iberia/geotiff/iberiageo.tif</SourceFilename>
+      <SourceBand>2</SourceBand>
+      <SourceProperties RasterXSize="1461" RasterYSize="771" DataType="Byte" BlockXSize="1461" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <DstRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Byte" band="3">
+    <NoDataValue>0</NoDataValue>
+    <ColorInterp>Blue</ColorInterp>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">0</SourceFilename>
+      <SourceBand>3</SourceBand>
+      <SourceProperties RasterXSize="1461" RasterYSize="771" DataType="Byte" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <DstRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">test_pictures/iberia/geotiff/iberiageo.tif</SourceFilename>
+      <SourceBand>3</SourceBand>
+      <SourceProperties RasterXSize="1461" RasterYSize="771" DataType="Byte" BlockXSize="1461" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <DstRect xOff="0" yOff="0" xSize="1461" ySize="771" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+  </VRTRasterBand>
+</VRTDataset>
