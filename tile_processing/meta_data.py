@@ -7,6 +7,7 @@ from create_region import ORIGINAL
 from create_region import GEOTIFF
 from create_region import TIFF
 from create_region import MASKED
+from create_region import MODELTIFF
 
 def translate_png_to_tiff(region, source = MASKED, dest = TIFF):
     """Translates all pngs in source folder and converts them to tiffs that will be put into dest folder."""
@@ -17,21 +18,20 @@ def translate_png_to_tiff(region, source = MASKED, dest = TIFF):
             img.save(TILE_PICTURE_LOCATIONS + region + dest + _file[:ext_index] + ".tiff")
         else:
             img.save(TILE_PICTURE_LOCATIONS + region + dest + _file + ".tiff")
+    print("Translated png to tiff")
 
-def get_geo_transform(region, data_source = None):
-    """Uses gdalinfo to return the the geotransform and projection type"""
-    if data_source == None:
-        data_source = GEOTIFF + region + "geo.tif"
+def get_geo_transform(region, data_file, data_folder = MODELTIFF):
+    """Uses gdalinfo to return the geotransform and projection type"""
+    data_source = data_folder + data_file
     ds = gdal.Open(TILE_PICTURE_LOCATIONS + region + data_source)
     return ds.GetGeoTransform(), ds.GetProjection(), ds.GetMetadata()
 
-def migrate_metadata_to_tiff(region, source = TIFF, data_folder = GEOTIFF, data_file = None):
+def migrate_metadata_to_tiff(region, source = TIFF, model_folder = MODELTIFF, data_folder = GEOTIFF, data_file = None):
     """takes metadata from data_source in the GEOTIFF folder for a region and creates new geotiff files based off data_source metadata."""
     if data_file == None:
         data_file = region + "geo.tif"
-    data_source = data_folder + data_file
     #gdalinfo to get coordinates of location
-    geo_transform, projection, meta_data= get_geo_transform(region, data_source)
+    geo_transform, projection, meta_data = get_geo_transform(region, data_file, model_folder)
     #assumes that _file is a tiff
     for _file in os.listdir(TILE_PICTURE_LOCATIONS + region + source):
         #changes file permissions of file
@@ -44,3 +44,4 @@ def migrate_metadata_to_tiff(region, source = TIFF, data_folder = GEOTIFF, data_
         dst_ds = src_ds.GetDriver().CreateCopy(TILE_PICTURE_LOCATIONS + region + data_folder + "geo" + _file, src_ds, strict = 0)
         dst_ds = None
         src_ds = None 
+    print("Migrated metadata to geotiff")

@@ -13,7 +13,7 @@ from tqdm import tqdm
 def create_masked_png(region, filename, mask = "mask.png"):
     """Uses bitwise and on mask and year to create tile of the parts of the region that are wanted. 
     @param region - name of directory wanted 
-    @param year - full file name containing map of region for particular year
+    @param filename- full file name containing map of region for particular year
     @param mask - full file name containing mask of region for all years, """
     img = cv2.imread(TILE_PICTURE_LOCATIONS + region + ORIGINAL + filename)
     msk = cv2.imread(TILE_PICTURE_LOCATIONS + region + MASK + mask, 0) 
@@ -23,5 +23,6 @@ def create_masked_png(region, filename, mask = "mask.png"):
 def mask_images(region):
     for _file in tqdm(os.listdir(TILE_PICTURE_LOCATIONS + region + ORIGINAL)):
         create_masked_png(region, _file)
+    print("masked all PNGS in region")
 
 
