@@ -7,7 +7,7 @@ var zoom;
 function initMap() {
 	latitude = 59.925580; //will be changed to use users last session data
 	longitude = 30.295948; // will be changed to use users last session data
-    zoom = 16; 
+    zoom = 5; 
 	map = L.map('map').setView([latitude, longitude], zoom);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
 	{
@@ -60,18 +60,16 @@ $(document).ready(function() {
         map.on('click', function(e) {
         /**checks to make sure map.zoom is bigger than 16 */
             var zoom = map.getZoom();
-            if (zoom > 16) {
-                var lat = e.latlng.lat;
-                var lng = e.latlng.lng;
-                var radius = 1000;
-                var file_return_limit = 10; 
-                url = "https://en.wikipedia.org/w/api.php?" + 
-                    "action=query&origin=*&list=geosearch&gscoord=" + lat + "|" + lng +
-                    "&gsradius=" + radius + "&gslimit=" + file_return_limit +
-                    "&prop=info|extracts&inprop=url" +
-                    "&format=json";
-                wiki_call(url);
-            }
+		var lat = e.latlng.lat;
+		var lng = e.latlng.lng;
+		var radius = 1000;
+		var file_return_limit = 10; 
+		url = "https://en.wikipedia.org/w/api.php?" + 
+		    "action=query&origin=*&list=geosearch&gscoord=" + lat + "|" + lng +
+		    "&gsradius=" + radius + "&gslimit=" + file_return_limit +
+		    "&prop=info|extracts&inprop=url" +
+		    "&format=json";
+		wiki_call(url);
         });
     });
 });

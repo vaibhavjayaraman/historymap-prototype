@@ -26,7 +26,7 @@ def create_vrt_and_transparent_tiff(region, source = GEOTIFF, vrt = VRT, dest = 
         remove(file_name + ".vrt")
     print("Created Vrt Files for " + region + " using files in " + source + " and outputting to " + dest)
 
-def create_tiles(region, source = TRANSPARENT_TIFF , dest = TILES):
+def create_tiles(region, source = TRANSPARENT_TIFF , dest = TILES, zoom = 8):
     source_dir = TILE_PICTURE_LOCATIONS + region + source
     dest_dir = TILE_PICTURE_LOCATIONS + region + dest
     for _file in tqdm(listdir(source_dir)):
@@ -38,7 +38,7 @@ def create_tiles(region, source = TRANSPARENT_TIFF , dest = TILES):
             makedirs(dest_dir + match.group())
         except FileExistsError as e:
             print(_file)
-        create_tile = "gdal2tiles.py --profile=mercator -z 1-17 " + source_dir + _file + " " + dest_dir + match.group() 
+        create_tile = "gdal2tiles.py --profile=mercator -z 1-" + str(zoom) + " " + source_dir + _file + " " + dest_dir + match.group() 
         system(create_tile)
     print("Created raster tiles for " + region + "using files in " + source + "and outputting to " + dest)
     
