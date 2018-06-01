@@ -116,11 +116,11 @@ $(document).ready(function() {
                     "&prop=info|extracts&inprop=url" +
                     "&format=json";
                 wiki_call(url);
+        });
             $('#map').on('click', '.article', function() {
                 win = window.open(current_url, '_blank');
 		article_ajax_call(current_url, current_title, 'click');
             });
-        });
     });
 });
 
