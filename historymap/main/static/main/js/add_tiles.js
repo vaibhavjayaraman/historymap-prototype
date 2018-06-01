@@ -1,6 +1,6 @@
 var tile_overlay = null;
 function addTiles(year) {
-	tile_overlay = L.tileLayer("http://oilspill.ocf.berkeley.edu:5000/tiles/" + year + "/{z}/{x}/{y}.png", {tms: true, opacity: .7}).addTo(map)
+	tile_overlay = L.tileLayer("http://oilspill.ocf.berkeley.edu:2000/" + year + "/{z}/{x}/{y}.png", {tms: true, opacity: .7}).addTo(map)
 }
 
 
