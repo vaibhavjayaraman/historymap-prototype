@@ -10,7 +10,7 @@ var win;
 function initMap() {
 	latitude = 59.925580; //will be changed to use users last session data
 	longitude = 30.295948; // will be changed to use users last session data
-    zoom = 16; 
+    zoom = 5; 
 	map = L.map('map').setView([latitude, longitude], zoom);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
 	{
