@@ -106,7 +106,6 @@ $(document).ready(function() {
         map.on('click', function(e) {
         /**checks to make sure map.zoom is bigger than 7*/
             var zoom = map.getZoom();
-            if (zoom > 7) {
                 var lat = e.latlng.lat;
                 var lng = e.latlng.lng;
                 var radius = 1000;
@@ -120,11 +119,7 @@ $(document).ready(function() {
             $('#map').on('click', '.article', function() {
                 win = window.open(current_url, '_blank');
 		article_ajax_call(current_url, current_title, 'click');
-		setTimeout(function() {
-			win.close();
-		}, 500);
             });
-            }
         });
     });
 });
