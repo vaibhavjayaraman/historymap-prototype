@@ -2,6 +2,9 @@ var map;
 var latitude; 
 var longitude;
 var zoom;
+var current_url;
+var current_title;
+var win;
 
 /**Initializes map. **/
 function initMap() {
@@ -18,9 +21,46 @@ function initMap() {
     }).addTo(map);
 }
 
+/**Function retrieves wikipedia article first paragraph. In browser Cache at a later time */
+function extract_wikipedia_head(title) {
+    var extract;
+    title = title.replace(/ /g,"_");
+    var url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + title
+    $.ajax({
+        type: 'GET',
+        url: url,
+        datatype: "json",
+        context: document.body,
+        global: false,
+        async: false,
+        crossdomain:true,
+        success: function(data) {
+            extract = data.extract;
+        }
+    });
+    return extract;
+}
+
+function article_ajax_call(url_data, title, request_type) {
+    	var wikipedia_title = "https://en.wikipedia.org/api/rest_v1/page/summary/" + title.replace(/ /g, "_");
+	$.ajax({
+		type: 'post',
+		url:"",
+		aysnc: true, 
+		data: {
+			'url' : url_data,
+			'title' : title,
+			'interaction_type': request_type,
+			'title_for_wikipedia' : wikipedia_title 
+		},
+		failure: function(data) {
+			alert("Article Ajax Call Fail");
+		}
+	});
+}
+
 /** Loads and places wikipedia articles on map. **/
 function wiki_call(url) {
-	alert(url);
     $.ajax({
         type: 'post',
         url: url,
@@ -36,14 +76,20 @@ function wiki_call(url) {
                 var article = articles[i];
                 var lat = article.lat;
                 var lon = article.lon;
-				var title = article.title;
+		var title = article.title;
                 var marker = L.marker([lat,lon]);
                 marker.addTo(map);
                 var url = "https://en.wikipedia.org/?curid="
                             + article.pageid;
-				var marker_popup = function(marker, url, title) {
+		article_ajax_call(url, title,'generation');
+		var marker_popup = function(marker, url, title) {
+        		var extract = extract_wikipedia_head(title);
 					return function() {
-						marker.bindPopup(title.bold() + "\n" + url).openPopup();
+                        			current_url = url;
+						current_title = title;
+						article_ajax_call(url, title, 'hover');
+						marker.bindPopup('<button class="article">' + title.bold() + '</button><p>' 
+                         + extract + "<\p>").openPopup();
 					}
 				};
                 marker.on('mouseover', marker_popup(marker, url, title)); 
@@ -58,9 +104,8 @@ initMap();
 $(document).ready(function() { 
     $(window).on('load', function() {
         map.on('click', function(e) {
-        /**checks to make sure map.zoom is bigger than 16 */
+        /**checks to make sure map.zoom is bigger than 7*/
             var zoom = map.getZoom();
-            if (zoom > 16) {
                 var lat = e.latlng.lat;
                 var lng = e.latlng.lng;
                 var radius = 1000;
@@ -71,7 +116,10 @@ $(document).ready(function() {
                     "&prop=info|extracts&inprop=url" +
                     "&format=json";
                 wiki_call(url);
-            }
+            $('#map').on('click', '.article', function() {
+                win = window.open(current_url, '_blank');
+		article_ajax_call(current_url, current_title, 'click');
+            });
         });
     });
 });
