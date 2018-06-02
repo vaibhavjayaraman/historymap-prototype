@@ -5,6 +5,8 @@ var zoom;
 var current_url;
 var current_title;
 var win;
+var wiki_markers;
+var wiki_geo_search_radius = 1000;
 
 /**Initializes map. **/
 function initMap() {
@@ -19,6 +21,7 @@ function initMap() {
 		id: 'mapbox.streets',
 		accessToken: 'pk.eyJ1IjoidmFpYmhhdmoiLCJhIjoiY2pmZ2d1NDVjMjdzMDMzbWlhdTRtZXAyZyJ9.X3KDHMveDXHRh795LdSFmw',
     }).addTo(map);
+	wiki_markers = L.layerGroup().addTo(map);
 }
 
 /**Function retrieves wikipedia article first paragraph. In browser Cache at a later time */
@@ -32,7 +35,7 @@ function extract_wikipedia_head(title) {
         datatype: "json",
         context: document.body,
         global: false,
-        async: false,
+        async: false, //there was a reason for this but I forgot why
         crossdomain:true,
         success: function(data) {
             extract = data.extract;
@@ -78,7 +81,7 @@ function wiki_call(url) {
                 var lon = article.lon;
 		var title = article.title;
                 var marker = L.marker([lat,lon]);
-                marker.addTo(map);
+                marker.addTo(wiki_markers);
                 var url = "https://en.wikipedia.org/?curid="
                             + article.pageid;
 		article_ajax_call(url, title,'generation');
@@ -108,11 +111,10 @@ $(document).ready(function() {
             var zoom = map.getZoom();
                 var lat = e.latlng.lat;
                 var lng = e.latlng.lng;
-                var radius = 1000;
                 var file_return_limit = 10; 
                 url = "https://en.wikipedia.org/w/api.php?" + 
                     "action=query&origin=*&list=geosearch&gscoord=" + lat + "|" + lng +
-                    "&gsradius=" + radius + "&gslimit=" + file_return_limit +
+                    "&gsradius=" + wiki_geo_search_radius + "&gslimit=" + file_return_limit +
                     "&prop=info|extracts&inprop=url" +
                     "&format=json";
                 wiki_call(url);

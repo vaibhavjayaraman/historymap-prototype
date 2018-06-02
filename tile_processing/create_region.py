@@ -17,8 +17,10 @@ MODELTIFF = "/modeltiff/"
 TRANSPARENT_TIFF= "/transparent_tiff/"
 VRT = "/vrt/"
 WRAPPED_VRT = "/wrapped_vrt/"
-TILES = "/tiles/"
+RASTER_TILES = "/raster_tiles/"
+VECTOR_TILES = "/vector_tiles/"
 ORIGINAL_SVG = "/original_svg/"
+GEOJSON="/geojson/"
 
 def create_region(region):
     """Creates directory  and subdirectories for maps of region. """
@@ -34,6 +36,7 @@ def create_region(region):
     os.makedirs(TILE_PICTURE_LOCATIONS + region + TILES)
     os.makedirs(TILE_PICTURE_LOCATIONS + region + TRANSPARENT_TIFF)
     os.makedirs(TILE_PICTURE_LOCATIONS + region + ORIGINAL_SVG)
+    os.makedirs(TILE_PICTURE_LOCATIONS + region + GEOJSON)
 def move_file(path, region, year):
     """Moves files to correct region. """
     os.rename(path, TILE_PICTURE_LOCATIONS + region + ORIGINAL)

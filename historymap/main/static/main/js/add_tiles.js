@@ -1,6 +1,20 @@
 var tile_overlay = null;
+var opacity = .7;
+
+function addRegionTiles(region, year) {
+	tile = L.tileLayer("http://oilspill.ocf.berkeley.edu:2000/" + region + "/" + year + "/{z}/{x}/{y}.png", {
+		tms: true, 
+		opacity: opacity,
+		className : region,
+	}).addTo(tile_overlay);
+}
+
+/**Add functionality that will allow one to add and remove individual tile overlays **/
+
 function addTiles(year) {
-	tile_overlay = L.tileLayer("http://oilspill.ocf.berkeley.edu:2000/" + year + "/{z}/{x}/{y}.png", {tms: true, opacity: .7}).addTo(map)
+	//if switching to vector tiles, use L.TileLayer.MVTSource
+	tile_overlay = L.layerGroup().addTo(map);
+	addRegionTiles("iberia", year);
 }
 
 
@@ -17,8 +31,12 @@ function change_year(){
 	}
 	//include check to make sure that year is a number
 	var year = document.getElementById("year_input").value;
-	addTiles(year);
-	document.getElementById('beginning').innerHTML = "The World in " + year;
+	if (!isNaN(year)) {
+		addTiles(year);
+		document.getElementById('beginning').innerHTML = "The World in " + year;
+	} else {
+		alert("Please Enter a number for year and resubmit.");
+	}
 }
 
 /**Removes overlay tiles **/

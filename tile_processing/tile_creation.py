@@ -1,12 +1,14 @@
 from os import system, listdir, makedirs, remove
 from re import search
 from create_region import TILE_PICTURE_LOCATIONS
-from create_region import GEOTIFF
 from create_region import VRT
 from create_region import WRAPPED_VRT
 from create_region import GEOTIFF
-from create_region import TILES
+from create_region import RASTER_TILES 
+from create_region import VECTOR_TILES
 from create_region import TRANSPARENT_TIFF
+from create_region import GEOJSON
+
 from tqdm import tqdm 
 
 def create_vrt_and_transparent_tiff(region, source = GEOTIFF, vrt = VRT, dest = TRANSPARENT_TIFF):
@@ -26,7 +28,7 @@ def create_vrt_and_transparent_tiff(region, source = GEOTIFF, vrt = VRT, dest = 
         remove(file_name + ".vrt")
     print("Created Vrt Files for " + region + " using files in " + source + " and outputting to " + dest)
 
-def create_tiles(region, source = TRANSPARENT_TIFF , dest = TILES, zoom = 8):
+def create_raster_tiles(region, source = TRANSPARENT_TIFF , dest = RASTER_TILES, zoom = 8):
     source_dir = TILE_PICTURE_LOCATIONS + region + source
     dest_dir = TILE_PICTURE_LOCATIONS + region + dest
     for _file in tqdm(listdir(source_dir)):
@@ -42,3 +44,30 @@ def create_tiles(region, source = TRANSPARENT_TIFF , dest = TILES, zoom = 8):
         system(create_tile)
     print("Created raster tiles for " + region + "using files in " + source + "and outputting to " + dest)
     
+def create_geojson(region, source = TRANSPARENT_TIFF, dest = GEOJSON):
+    source_dir = TILE_PICTURE_LOCATIONS + region + source + "/"
+    dest_dir = TILE_PICTURE_LOCATIONS + region + dest + "/"
+    for _file in tqdm(listdir(source_dir)):
+        if _file.find(".") != -1:
+            file_name = _file[:_file.find(".")]
+        else:
+            file_name = _file
+        create_geojson = "gdal_polygonize.py " + source_dir + _file + " -f {} " + dest_dir + file_name + ".geojson" 
+        system(create_geojson.format("'GeoJSON'"))
+    print("Created geojson files for " + region + " using files in " + source + " and outputting to " + dest) 
+
+def create_vector_tiles(region, source = GEOJSON, dest = VECTOR_TILES, zoom = 14):
+    source_dir = TILE_PICTURE_LOCATIONS + region + source
+    dest_dir = TILE_PICTURE_LOCATIONS + region + dest
+    for _file in tqdm(listdir(source_dir)):
+        match = search(r'\d+', _file)
+        if match == None:
+            print(_file)
+            continue
+        try:
+            makedirs(dest_dir + match.group())
+        except FileExistsError as e:
+            print(_file)
+        create_tile = "tippecanoe -e " + dest_dir + match.group() + " -z" + str(zoom) + " " + source_dir + "/" + _file
+        system(create_tile)
+    print("Created vector tiles for " + region + "using files in " + source + "and outputting to " + dest)
