@@ -1,9 +1,9 @@
-import L from 'leaflet';
-import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
-
-const provider = new OpenStreetMapProvider();
+//later change to use npm module import
+var GeoSearchControl = window.GeoSearch.GeoSearchControl;
+var OpenStreetMapProvider = window.GeoSearch.OpenStreetMapProvider;
+const provider = new OpenStreetMapProvider(); 
 const searchControl = new GeoSearchControl({
-	provider: provider,
-});
+	provider: provider, 
+}); 
 
 map.addControl(searchControl);
