@@ -28,6 +28,11 @@
 		<input type="text" id="wiki_search_range_change" placeholder="Enter a Range that you would like to search for wikipedia articles based on click between 10 and 10000 meters (noninclusive)">
 		<input type="submit" value="submit" onclick="change_wiki_range();"/>
 	</form>
+	<form id="" onsubmit="return false;" >
+		<!-- Put in CSS file -->
+		<input type = "text" id="wiki_doc_search"  placeholder="Enter a Wikipedia Article">
+		<input type ="submit" value="submit" onclick= "wikipedia_document_search();"/>
+	</form>
     </body>
 </html>
 <script src="{% static "main/js/map_init.js" %}"></script>
@@ -37,3 +42,4 @@
 <link  href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" rel="stylesheet" />
 <script src="https://unpkg.com/leaflet-geosearch@latest/dist/bundle.min.js"></script>
 <script src="{% static "main/js/search_bar.js"%}"></script>
+<script src="{% static "main/js/wiki_search.js"%}"></script>

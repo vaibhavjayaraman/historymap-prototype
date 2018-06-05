@@ -19,6 +19,8 @@ def home(request):
                 article.times_hovered_over += 1
             elif article_interaction == 'click':
                 article.times_clicked_on += 1
+            elif article_interaction == "search":
+                article.times_searched += 1
             else:
                 return HttpResponse('Error')
             article.save()
