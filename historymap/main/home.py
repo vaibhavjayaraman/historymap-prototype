@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from historymap.main.models import Article
+from historymap.users.models import UserArticle
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from datetime import datetime
 import json
 
 def item_item_recommender_results(user):
@@ -18,22 +20,35 @@ def home(request):
                 article = Article.objects.select_for_update().get(url = url, title = title)
             except ObjectDoesNotExist:
                 article = Article(url = url, title = title)
+            if request.user.is_authenticated:
+                try:
+                    user_article = UserArticle.objects.select_for_update().get(url = url, title = title, user = request.user)
+                    user_article.last_visited = datetime.now()
+                except ObjectDoesNotExist:
+                    user_article = UserArticle(url = url, title = title, user = request.user)
             if article_interaction == 'generation':
                 article.times_generated += 1
             elif article_interaction == 'hover':
                 article.times_hovered_over += 1
+                if request.user.is_authenticated:
+                    user_article.times_hovered_over += 1
             elif article_interaction == 'click':
                 article.times_clicked_on += 1
+                if request.user.is_authenticated:
+                    user_article.times_clicked_on += 1
             elif article_interaction == "search":
                 article.times_searched += 1
+                if request.user.is_authenticated:
+                    user_article.times_searched += 1
             else:
                 return HttpResponse('Error')
             article.save()
+            if request.user.is_authenticated:
+                user_article.save()
     if request.user.is_authenticated:
         item_item_rs = item_item_recommender_results(request.user)
         i2i_rs = json.dumps(item_item_rs)
         args = {'user': request.user, 'i2i_collab_filter': i2i_rs}
     else:
         args = {'user': None, 'i2i_collab_filter': None}
-    print(args['user'])
     return render(request, 'main/home.html', args)

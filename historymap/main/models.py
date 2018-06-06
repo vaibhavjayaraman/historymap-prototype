@@ -10,5 +10,5 @@ class Article(models.Model):
     times_hovered_over = models.BigIntegerField(default = 0)
     times_clicked_on = models.BigIntegerField(default = 0)
     date = models.BigIntegerField(default = 0)
-    last_crawled = models.DateTimeField(default = datetime.utcfromtimestamp(0), null = True)
+    last_crawled = models.DateTimeField(null = True, blank = True)
     wikipedia_title_url = models.TextField(default = "")
