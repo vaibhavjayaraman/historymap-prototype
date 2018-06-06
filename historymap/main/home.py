@@ -11,6 +11,7 @@ def item_item_recommender_results(user):
     return None
 
 def home(request):
+    user_auth = False
     if request.method == 'POST':
         article_interaction = request.POST.get('interaction_type', default = 0)
         url = request.POST.get('url', default = 0)
@@ -20,7 +21,9 @@ def home(request):
                 article = Article.objects.select_for_update().get(url = url, title = title)
             except ObjectDoesNotExist:
                 article = Article(url = url, title = title)
-            if request.user.is_authenticated:
+            if request.user.is_authenticated and (article_interaction == 'hover' or article_interaction == 'click' or article_interaction == 'search'):
+                #need to evaluate all of those conditions since we do not want a user_article to be created on generation
+                user_auth = True 
                 try:
                     user_article = UserArticle.objects.select_for_update().get(url = url, title = title, user = request.user)
                     user_article.last_visited = datetime.now()
@@ -43,7 +46,7 @@ def home(request):
             else:
                 return HttpResponse('Error')
             article.save()
-            if request.user.is_authenticated:
+            if user_auth:
                 user_article.save()
     if request.user.is_authenticated:
         item_item_rs = item_item_recommender_results(request.user)
