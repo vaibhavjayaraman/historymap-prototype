@@ -24,6 +24,19 @@ function initMap() {
     }).addTo(map);
 	wiki_markers = L.layerGroup().addTo(map);
 }
+var csrftoken = Cookies.get('csrftoken');
+function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+$.ajaxSetup({
+   beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
 
 /**Function retrieves wikipedia article first paragraph. In browser Cache at a later time */
 function extract_wikipedia_head(title) {
@@ -50,12 +63,12 @@ function article_ajax_call(url_data, title, request_type) {
 	$.ajax({
 		type: 'post',
 		url:"",
-		aysnc: true, 
+		async: true, 
 		data: {
 			'url' : url_data,
 			'title' : title,
 			'interaction_type': request_type,
-			'title_for_wikipedia' : wikipedia_title 
+			'title_for_wikipedia' : wikipedia_title,
 		},
 		failure: function(data) {
 			alert("Article Ajax Call Fail");
@@ -84,7 +97,7 @@ function add_wiki_marker(lat, lon, pageid, title) {
 /** Loads and places wikipedia articles on map. **/
 function wiki_call(url) {
     $.ajax({
-        type: 'post',
+        type: 'GET',
         url: url,
         datatype: "json",
         context: document.body,

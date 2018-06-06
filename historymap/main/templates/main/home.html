@@ -16,6 +16,7 @@
 	</script>
 	{% if user == None %}
 		<button onclick="window.location.href = 'users/login/';">Login</button>
+		<button onclick="window.location.href = 'users/signup/';">Signup</button>
 	{% else %}
 		<button onclick="window.location.href= 'users/logout/';"> Logout</button>
 	{% endif %}
@@ -49,6 +50,8 @@
 	<div id="item_collab_recs"></div>
     </body>
 </html>
+<script src="{% static "main/js/js.cookie.js" %}"></script>
+<script src="{% static "main/js/crsf_ajax_setup.js" %}"></script>
 <script src="{% static "main/js/map_init.js" %}"></script>
 <script src="{% static "main/js/add_tiles.js" %}"></script>
 <script src="{% static "main/js/markers.js"%}"></script>
