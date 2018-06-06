@@ -2,6 +2,11 @@ from django.shortcuts import render
 from historymap.main.models import Article
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+import json
+
+def item_item_recommender_results(user):
+    """Returns recommended articles that one should visit based off previous visits and other users"""
+    return None
 
 def home(request):
     if request.method == 'POST':
@@ -24,4 +29,11 @@ def home(request):
             else:
                 return HttpResponse('Error')
             article.save()
-    return render(request, 'main/home.html')
+    if request.user.is_authenticated:
+        item_item_rs = item_item_recommender_results(request.user)
+        i2i_rs = json.dumps(item_item_rs)
+        args = {'user': request.user, 'i2i_collab_filter': i2i_rs}
+    else:
+        args = {'user': None, 'i2i_collab_filter': None}
+    print(args['user'])
+    return render(request, 'main/home.html', args)

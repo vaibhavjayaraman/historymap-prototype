@@ -19,12 +19,11 @@ function wikipedia_document_search() {
 				alert("The Page you request does not exist. Case sensitivity Matters. Capitalization Rules Matter. Spacing Matters");
 			}
 			else {
-				var normalized = data.query.normalized;
-				var title = normalized[0].to;
 				page = pages[pageid];
+				var title = page.title
+				var coordinates = page.coordinates;
 				console.log(page);
 				article_ajax_call(WIKI_PAGE_ID_URL + pageid, title, "search");
-				var coordinates = page.coordinates;
 				if (coordinates != null) {
 					var lat = coordinates[0].lat;
 					var lon = coordinates[0].lon;

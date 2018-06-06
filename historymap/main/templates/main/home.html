@@ -1,5 +1,5 @@
-{%load static%}
 <!DOCTYPE html>
+{%load static %}
 <html>
     <head>
         <title> HistoryMap</title>
@@ -10,6 +10,19 @@
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     </head>
     <body>
+	<script type="text/javascript">
+		var item_collab_filter = JSON.parse({{i2i_collab_filter}});
+		var current_user = "{{user}}";
+	</script>
+	{% if user == None %}
+		<button onclick="window.location.href = 'users/login/';">Login</button>
+	{% else %}
+		<button onclick="window.location.href= 'users/logout/';"> Logout</button>
+	{% endif %}
+	{%if user != None %}
+		<div id="Welcome">Welcome {{user}} </div>
+	{% endif %}
+
         <div id="beginning">The World Today</div>
         <div id="map" src="{% static "main/css/home.css" %}"></div>
 	<form id="year_map" onsubmit="return false;" >
@@ -33,6 +46,7 @@
 		<input type = "text" id="wiki_doc_search"  placeholder="Enter a Wikipedia Article">
 		<input type ="submit" value="submit" onclick= "wikipedia_document_search();"/>
 	</form>
+	<div id="item_collab_recs"></div>
     </body>
 </html>
 <script src="{% static "main/js/map_init.js" %}"></script>
@@ -43,3 +57,4 @@
 <script src="https://unpkg.com/leaflet-geosearch@latest/dist/bundle.min.js"></script>
 <script src="{% static "main/js/search_bar.js"%}"></script>
 <script src="{% static "main/js/wiki_search.js"%}"></script>
+<script src="{% static "users/js/recs.js"%}"></script>
