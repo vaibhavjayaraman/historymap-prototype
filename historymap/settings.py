@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from configparser import ConfigParser
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,11 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@^rs#2$7ylxg1hcu!jr0767)982qwm&4&pp672#3$((^pslg*x'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['oilspill.ocf.berkeley.edu', '0.0.0.0']
 
@@ -73,22 +69,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'historymap.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'OPTIONS': {
-                'sql_mode': 'traditional',
-            },
-            'NAME': 'historymaptest',
-            'USER': 'hmap',
-            'PASSWORD': 'merenskyth',
-            'HOST': 'localhost',
-            'PORT':'',
-            }
-        }
 
 #PASSWORD Requirements
 AUTH_PASSWORD_VALIDATORS = [
@@ -128,5 +108,30 @@ LOGIN_REDIRECT_URL = 'home'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
+conf = ConfigParser()
+conf.read('/etc/historymap/historymap.conf')
+STATIC_URL = conf.get('django', 'static_url')
 
-STATIC_URL = '/static/'
+#Settings loaded from config file
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = conf.get('django', 'secret')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = conf.get('django', 'debug')
+
+# Database
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+
+DATABASES = {
+        'default': {
+            'ENGINE': conf.get('mysql', 'engine'), 
+            'OPTIONS': {
+                'sql_mode': conf.get('mysql', 'sql_mode'), 
+            },
+            'NAME': conf.get('mysql', 'name'), 
+            'USER': conf.get('mysql','user'),
+            'PASSWORD': conf.get('mysql', 'password'),
+            'HOST': conf.get('mysql', 'host'),
+            'PORT': conf.get('mysql', 'port'),
+            }
+        }
