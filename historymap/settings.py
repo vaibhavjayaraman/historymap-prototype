@@ -78,7 +78,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {
-            'min_length': 10,
+            'min_length': 9,
         }
     },
     {
@@ -88,15 +88,19 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'historymap.users.validators.SpecialCharacterValidator', 
+        'NAME': 'historymap.users.validators.NumberValidator', 
     }, 
     {
-        'NAME': 'historymap.users.validators.NumberValidator', 
+        'NAME': 'historymap.users.validators.SpecialCharacterValidator', 
     }, 
     {
         'NAME': 'historymap.users.validators.UpperCaseValidator', 
     },
+    {
+        'NAME': 'historymap.users.validators.LowerCaseValidator', 
+    },
 ]
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
