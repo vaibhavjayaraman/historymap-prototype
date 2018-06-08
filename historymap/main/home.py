@@ -16,11 +16,13 @@ def home(request):
         article_interaction = request.POST.get('interaction_type', default = 0)
         url = request.POST.get('url', default = 0)
         title = request.POST.get('title', default = 0)
+        lat = request.POST.get('lat', default = None);
+        lon = request.POST.get('lon', default = None);
         with transaction.atomic():
             try: 
-                article = Article.objects.select_for_update().get(url = url, title = title)
+                article = Article.objects.select_for_update().get(url = url, title = title, lat = lat, lon = lon)
             except ObjectDoesNotExist:
-                article = Article(url = url, title = title)
+                article = Article(url = url, title = title, lat = lat, lon = lon)
             if request.user.is_authenticated and (article_interaction == 'hover' or article_interaction == 'click' or article_interaction == 'search'):
                 #need to evaluate all of those conditions since we do not want a user_article to be created on generation
                 user_auth = True 
@@ -28,7 +30,7 @@ def home(request):
                     user_article = UserArticle.objects.select_for_update().get(url = url, title = title, user = request.user)
                     user_article.last_visited = datetime.now()
                 except ObjectDoesNotExist:
-                    user_article = UserArticle(url = url, title = title, user = request.user)
+                    user_article = UserArticle(url = url, title = title, user = request.user, )
             if article_interaction == 'generation':
                 article.times_generated += 1
             elif article_interaction == 'hover':

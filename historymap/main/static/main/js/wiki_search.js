@@ -22,15 +22,15 @@ function wikipedia_document_search() {
 				page = pages[pageid];
 				var title = page.title
 				var coordinates = page.coordinates;
-				console.log(page);
-				article_ajax_call(WIKI_PAGE_ID_URL + pageid, title, "search");
 				if (coordinates != null) {
 					var lat = coordinates[0].lat;
 					var lon = coordinates[0].lon;
 					map.setView([lat, lon]);
 					add_wiki_marker(lat, lon, pageid, title);
+					article_ajax_call(WIKI_PAGE_ID_URL + pageid, title, "search", lat, lon);
 				}
 				else {
+					article_ajax_call(WIKI_PAGE_ID_URL + pageid, title, "search", null, null);
 					alert("No coordinates for this page. Perhaps try again by removing leading grammatical articles (for example The, A, etc. If you are looking for a person we are working on a feature that will allow you to seelocations that are associated with that person.)");
 					//Show examples of places that are associated with this article once wikipedia deep search occurs and see if they want to go there
 				}

@@ -12,3 +12,5 @@ class Article(models.Model):
     date = models.BigIntegerField(default = 0)
     last_crawled = models.DateTimeField(null = True, blank = True)
     wikipedia_title_url = models.TextField(default = "")
+    lat = models.FloatField(null = True)
+    lon = models.FloatField(null = True)

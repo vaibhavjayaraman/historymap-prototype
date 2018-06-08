@@ -7,6 +7,8 @@ var current_title;
 var win;
 var wiki_markers;
 var wiki_geo_search_radius = 1000;
+var current_article_lat;
+var current_article_lon;
 var WIKI_PAGE_ID_URL = "https://en.wikipedia.org/?curid="
 
 /**Initializes map. **/
@@ -58,7 +60,8 @@ function extract_wikipedia_head(title) {
     return extract;
 }
 
-function article_ajax_call(url_data, title, request_type) {
+function article_ajax_call(url_data, title, request_type, lat, lon) {
+	console.log(lat);
     	var wikipedia_title = "https://en.wikipedia.org/api/rest_v1/page/summary/" + title.replace(/ /g, "_");
 	$.ajax({
 		type: 'post',
@@ -69,6 +72,8 @@ function article_ajax_call(url_data, title, request_type) {
 			'title' : title,
 			'interaction_type': request_type,
 			'title_for_wikipedia' : wikipedia_title,
+			'lat': lat,
+			'lon': lon,
 		},
 		failure: function(data) {
 			alert("Article Ajax Call Fail");
@@ -76,12 +81,14 @@ function article_ajax_call(url_data, title, request_type) {
 	});
 }
 
-function wiki_marker_popup(marker, url, title) {
+function wiki_marker_popup(marker, url, title, lat, lon) {
 	return function() {
 		var extract = extract_wikipedia_head(title);
                 current_url = url;
 		current_title = title;
-		article_ajax_call(url, title, 'hover');
+		current_article_lat = lat;
+		current_article_lon = lat;
+		article_ajax_call(url, title, 'hover', lat, lon);
 		marker.bindPopup('<button class="article">' + title.bold() + '</button><p>' 
         	+ extract + "<\p>").openPopup();
 	}
@@ -90,8 +97,8 @@ function add_wiki_marker(lat, lon, pageid, title) {
 	var marker = L.marker([lat,lon]);
         marker.addTo(wiki_markers);
 	var url = WIKI_PAGE_ID_URL + pageid;
-	article_ajax_call(url, title,'generation');
-        marker.on('mouseover', wiki_marker_popup(marker, url, title)); 
+	article_ajax_call(url, title,'generation', lat, lon);
+        marker.on('mouseover', wiki_marker_popup(marker, url, title, lat, lon)); 
 }
 
 /** Loads and places wikipedia articles on map. **/
@@ -107,10 +114,14 @@ function wiki_call(url) {
         success: function(data) {
             var parsed_data = data
             var articles = parsed_data.query.geosearch;
-            for (var i = 0; i < articles.length; i++) {
-                var article = articles[i];
-		add_wiki_marker(article.lat, article.lon, article.pageid, article.title)
-            }
+            if (articles.length == 0) {
+		    alert("This location does not seem to be around wikipedia articles");
+	    } else {
+		    for (var i = 0; i < articles.length; i++) {
+			var article = articles[i];
+			add_wiki_marker(article.lat, article.lon, article.pageid, article.title)
+            	}
+	    }
         }
     });
 }
@@ -133,7 +144,7 @@ $(document).ready(function() {
         });
             $('#map').on('click', '.article', function() {
                 win = window.open(current_url, '_blank');
-		article_ajax_call(current_url, current_title, 'click');
+		article_ajax_call(current_url, current_title, 'click', current_article_lat, current_article_lon);
             });
     });
 });

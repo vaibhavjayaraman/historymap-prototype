@@ -87,6 +87,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'historymap.users.validators.SpecialCharacterValidator', 
+    }, 
+    {
+        'NAME': 'historymap.users.validators.NumberValidator', 
+    }, 
+    {
+        'NAME': 'historymap.users.validators.UpperCaseValidator', 
+    },
 ]
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
