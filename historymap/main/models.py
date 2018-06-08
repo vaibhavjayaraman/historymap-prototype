@@ -14,3 +14,9 @@ class Article(models.Model):
     wikipedia_title_url = models.TextField(default = "")
     lat = models.FloatField(null = True)
     lon = models.FloatField(null = True)
+
+class Year(models.Model):
+    year = models.IntegerField()
+    times_requested = models.BigIntegerField(default = 0)
+    wikipedia_timeline = models.TextField(null = True)
+    wikipedia_last_crawled = models.DateTimeField(null = True, blank = True)

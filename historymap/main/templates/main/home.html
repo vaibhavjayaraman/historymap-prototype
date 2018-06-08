@@ -47,12 +47,14 @@
 		<input type = "text" id="wiki_doc_search"  placeholder="Enter a Wikipedia Article">
 		<input type ="submit" value="submit" onclick= "wikipedia_document_search();"/>
 	</form>
+	<div id="wiki_year_timeline"></div>
 	<div id="item_collab_recs"></div>
     </body>
 </html>
 <script src="{% static "main/js/js.cookie.js" %}"></script>
 <script src="{% static "main/js/crsf_ajax_setup.js" %}"></script>
 <script src="{% static "main/js/map_init.js" %}"></script>
+<script src="{% static "main/js/wiki_articles.js" %}"></script>
 <script src="{% static "main/js/add_tiles.js" %}"></script>
 <script src="{% static "main/js/markers.js"%}"></script>
 <script src="{% static "main/js/preferences.js"%}"></script>

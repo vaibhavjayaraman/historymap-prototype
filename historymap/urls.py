@@ -20,5 +20,6 @@ from historymap.main.home import home
 urlpatterns = [
     url(r'^admin/', admin.site.urls), 
     url(r'^$', home, name='home'),
+    url(r'^main/', include(('historymap.main.urls', 'main'), namespace="main")), 
     url(r'^users/', include(('historymap.users.urls', 'users') , namespace="users")),
 ]

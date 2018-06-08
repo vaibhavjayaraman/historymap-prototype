@@ -27,4 +27,10 @@ class UserArticle(models.Model):
     last_visited = models.DateTimeField(default = datetime.now)
     first_visited = models.DateTimeField(default = datetime.now)
     
-    
+class UserYear(models.Model):
+    year = models.IntegerField()
+    times_requested = models.BigIntegerFeild(default = 0)
+    user = models.ForeignKey(User, on_delete = models.SET(get_new_deleted_user))
+    first_visited = models.DateTimeField(default = datetime.now)
+    last_visited = models.DateTimeField(default = datetime.now)
+
