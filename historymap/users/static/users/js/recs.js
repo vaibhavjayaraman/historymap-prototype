@@ -2,7 +2,9 @@
  */
 
 function list_item_to_item_collab_filter() {
+	console.log(current_user);
 	if (current_user != null) {
+		console.log(current_user);
 		if (item_collab_filter == null) {
 			item_collab_filter = "N/A. We are working on this feature right now!";
 		}

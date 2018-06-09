@@ -33,7 +33,6 @@ function extract_wikipedia_head(title) {
 }
 
 function article_ajax_call(url_data, title, request_type, lat, lon) {
-	console.log(lat);
     	var wikipedia_title = "https://en.wikipedia.org/api/rest_v1/page/summary/" + title.replace(/ /g, "_");
 	$.ajax({
 		type: 'post',
@@ -60,7 +59,7 @@ function wiki_marker_popup(marker, url, title, lat, lon) {
                 current_url = url;
 		current_title = title;
 		current_article_lat = lat;
-		current_article_lon = lat;
+		current_article_lon = lon;
 		article_ajax_call(url, title, 'hover', lat, lon);
 		marker.bindPopup('<button class="article">' + title.bold() + '</button><p>' 
         	+ extract + "<\p>").openPopup();

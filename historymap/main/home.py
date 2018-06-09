@@ -13,8 +13,8 @@ def item_item_recommender_results(user):
     """Returns recommended articles that one should visit based off previous visits and other users"""
     return None
 
-def wiki_article_post_request(request)
-    """Handles analytics for when wiki_articles are interacted with"""
+def wiki_article_post_request(request):
+    """Handles analytics for when wiki_articles are interacted with."""
     user_auth = False
     article_interaction = request.POST.get('interaction_type', default = 0)
     url = request.POST.get('url', default = 0)
@@ -66,12 +66,12 @@ def year_post_request(request):
         try:
             year_obj = Year.objects.select_for_update().get(year = year)
         except ObjectDoesNotExist:
-            year_obj = Year(year)
+            year_obj = Year(year  = year)
         if request.user.is_authenticated:
             try:
                 user_year_obj = UserYear.objects.select_for_update().get(year = year, user = user)
             except ObjectDoesNotExist:
-                user_year_obj = UserYear(year, user)
+                user_year_obj = UserYear(year = year, user = user)
         year_obj.times_requested += 1
         wiki_year_timeline = year_obj.wikipedia_timeline
         year_obj.save()
@@ -86,21 +86,24 @@ def year_post_request(request):
     return wiki_year_timeline
 
 def wiki_year_timeline(request):
-    timeline = year_post_request(request)
-    data = {
-            'timeline': timeline,
-    }
+    data = {}
+    if request.method == "POST":
+        timeline = year_post_request(request)
+        data = {
+                'timeline': timeline,
+        }
     return JsonResponse(data)
     
 def home(request):
     user = None
     i2i_rs = None
     if request.method == 'POST':
-        if request.name == "wiki_article":
+        if request.POST.get('name') == "wiki_article":
             wiki_article_post_request(request)
     if request.user.is_authenticated:
         user = request.user
         item_item_rs = item_item_recommender_results(user)
         i2i_rs = json.dumps(item_item_rs)
     args = {'user': user, 'i2i_collab_filter': i2i_rs}
+    print(user)
     return render(request, 'main/home.html', args)

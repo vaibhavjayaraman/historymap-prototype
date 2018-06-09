@@ -13,8 +13,8 @@ var WIKI_PAGE_ID_URL = "https://en.wikipedia.org/?curid="
 
 /**Initializes map. **/
 function initMap() {
-	latitude = 0; //will be changed to use users last session data
-	longitude = 0; // will be changed to use users last session data
+	latitude = 47.3769; //will be changed to use users last session data
+	longitude = 8.5417; // will be changed to use users last session data
     zoom = 5; 
 	map = L.map('map').setView([latitude, longitude], zoom);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 

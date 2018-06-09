@@ -33,6 +33,7 @@ function add_wikipedia_timeline(timeline_text) {
 
 /** Adds timeline from wikipedia. **/
 function addWikiYearTimeline(year) {
+	console.log(year);
 	$.ajax({
 		type: 'POST', 
 		url:"main/wiki_timeline/", 

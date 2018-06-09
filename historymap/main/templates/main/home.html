@@ -11,8 +11,14 @@
     </head>
     <body>
 	<script type="text/javascript">
-		var item_collab_filter = JSON.parse({{i2i_collab_filter}});
-		var current_user = "{{user}}";
+		var item_collab_filter = null;
+		var current_user = null;
+		{%if i2i_collab_filter != None %}
+			item_collab_filter = JSON.parse({{i2i_collab_filter}});
+		{% endif %}
+		{%if user != None %}
+			current_user = "{{user}}";
+		{% endif %}
 	</script>
 	{% if user == None %}
 		<button onclick="window.location.href = 'users/login/';">Login</button>
