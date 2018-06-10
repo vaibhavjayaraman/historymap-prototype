@@ -19,8 +19,11 @@ def wiki_article_post_request(request):
     article_interaction = request.POST.get('interaction_type', default = 0)
     url = request.POST.get('url', default = 0)
     title = request.POST.get('title', default = 0)
-    lat = request.POST.get('lat', default = None);
-    lon = request.POST.get('lon', default = None);
+    lat = request.POST.get('lat', default = None)
+    lon = request.POST.get('lon', default = None)
+    if lat == "" or lon == "":
+        lat = None
+        lon = None
     with transaction.atomic():
         try: 
             article = Article.objects.select_for_update().get(url = url, title = title, lat = lat, lon = lon)
@@ -33,7 +36,7 @@ def wiki_article_post_request(request):
                 user_article = UserArticle.objects.select_for_update().get(url = url, title = title, user = request.user)
                 user_article.last_visited = datetime.now()
             except ObjectDoesNotExist:
-                user_article = UserArticle(url = url, title = title, user = request.user, )
+                user_article = UserArticle(url = url, title = title, user = request.user)
         if article_interaction == 'generation':
             article.times_generated += 1
         elif article_interaction == 'hover':
@@ -105,5 +108,4 @@ def home(request):
         item_item_rs = item_item_recommender_results(user)
         i2i_rs = json.dumps(item_item_rs)
     args = {'user': user, 'i2i_collab_filter': i2i_rs}
-    print(user)
     return render(request, 'main/home.html', args)
