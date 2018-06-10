@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 from configparser import ConfigParser
 
+CONF = "/etc/historymap/historymap.conf"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -36,6 +37,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'historymap.users',
     'historymap.main',
+    'historymap.wikiparse',
 )
 
 MIDDLEWARE = (
@@ -122,7 +124,7 @@ LOGIN_REDIRECT_URL = 'home'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 conf = ConfigParser()
-conf.read('/etc/historymap/historymap.conf')
+conf.read(CONF)
 STATIC_URL = conf.get('django', 'static_url')
 
 #Settings loaded from config file

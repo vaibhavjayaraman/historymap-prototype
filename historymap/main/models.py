@@ -20,3 +20,4 @@ class Year(models.Model):
     times_requested = models.BigIntegerField(default = 0)
     wikipedia_timeline = models.TextField(null = True)
     wikipedia_last_crawled = models.DateTimeField(null = True, blank = True)
+    url = models.URLField(null = True, blank = True)
