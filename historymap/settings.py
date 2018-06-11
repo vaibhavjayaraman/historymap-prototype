@@ -16,7 +16,7 @@ from configparser import ConfigParser
 
 CONF = "/etc/historymap/historymap.conf"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE = 'mysql'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -139,14 +139,14 @@ DEBUG = conf.get('django', 'debug')
 
 DATABASES = {
         'default': {
-            'ENGINE': conf.get(DATABASE, 'engine'), 
+            'ENGINE': conf.get('mysql', 'engine'), 
             'OPTIONS': {
                 'sql_mode': conf.get('mysql', 'sql_mode'), 
             },
-            'NAME': conf.get(DATABASE, 'name'), 
-            'USER': conf.get(DATABASE, 'user'),
-            'PASSWORD': conf.get(DATABASE, 'password'),
-            'HOST': conf.get(DATABASE , 'host'),
-            'PORT': conf.get(DATABASE , 'port'),
+            'NAME': conf.get('mysql', 'name'), 
+            'USER': conf.get('mysql','user'),
+            'PASSWORD': conf.get('mysql', 'password'),
+            'HOST': conf.get('mysql', 'host'),
+            'PORT': conf.get('mysql', 'port'),
             }
         }
