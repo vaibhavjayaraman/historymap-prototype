@@ -21,22 +21,79 @@ RASTER_TILES = "/raster_tiles/"
 VECTOR_TILES = "/vector_tiles/"
 ORIGINAL_SVG = "/original_svg/"
 GEOJSON="/geojson/"
+LEGEND_MASK = "/legend_mask/"
+LEGENDS = "/legends/"
 
+def create_region_subdirs(region):
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + ORIGINAL)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + EDGE)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + TEXT)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + MASK)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + MASKED)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + GEOTIFF)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + TIFF)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + VRT)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + RASTER_TILES)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + VECTOR_TILES)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + TRANSPARENT_TIFF)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + ORIGINAL_SVG)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + GEOJSON)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + LEGEND_MASK)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + LEGENDS)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    
 def create_region(region):
     """Creates directory  and subdirectories for maps of region. """
-    os.makedirs(TILE_PICTURE_LOCATIONS + region)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + ORIGINAL)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + EDGE)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + TEXT)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + MASK)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + MASKED)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + GEOTIFF)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + TIFF)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + VRT)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + TILES)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + TRANSPARENT_TIFF)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + ORIGINAL_SVG)
-    os.makedirs(TILE_PICTURE_LOCATIONS + region + GEOJSON)
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    create_region_subdirs(region)
+
 def move_file(path, region, year):
     """Moves files to correct region. """
     os.rename(path, TILE_PICTURE_LOCATIONS + region + ORIGINAL)

@@ -8,10 +8,11 @@ from create_region import GEOTIFF
 from create_region import TIFF
 from create_region import MASKED
 from create_region import MODELTIFF
+from tqdm import tqdm
 
 def translate_png_to_tiff(region, source = MASKED, dest = TIFF):
     """Translates all pngs in source folder and converts them to tiffs that will be put into dest folder."""
-    for _file in os.listdir(TILE_PICTURE_LOCATIONS + region + source):
+    for _file in tqdm(os.listdir(TILE_PICTURE_LOCATIONS + region + source)):
         img = Image.open(TILE_PICTURE_LOCATIONS + region + source + _file)
         ext_index = _file.find(".png")
         if ext_index != -1:
@@ -33,7 +34,7 @@ def migrate_metadata_to_tiff(region, source = TIFF, model_folder = MODELTIFF, da
     #gdalinfo to get coordinates of location
     geo_transform, projection, meta_data = get_geo_transform(region, data_file, model_folder)
     #assumes that _file is a tiff
-    for _file in os.listdir(TILE_PICTURE_LOCATIONS + region + source):
+    for _file in tqdm(os.listdir(TILE_PICTURE_LOCATIONS + region + source)):
         #changes file permissions of file
         os.chmod(TILE_PICTURE_LOCATIONS + region + source + _file, 0o777)     
         src_ds = gdal.Open(TILE_PICTURE_LOCATIONS + region + source + _file, gdal.GA_Update)
