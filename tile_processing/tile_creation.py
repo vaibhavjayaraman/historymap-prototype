@@ -40,7 +40,7 @@ def create_raster_tiles(region, source = TRANSPARENT_TIFF , dest = RASTER_TILES,
             makedirs(dest_dir + match.group())
         except FileExistsError as e:
             print(_file)
-        create_tile = "gdal2tiles.py --profile=mercator -z 1-" + str(zoom) + " " + source_dir + _file + " " + dest_dir + match.group() 
+        create_tile = "gdal2tiles.py --s_srs EPSG:3857 --profile=mercator -z 1-" + str(zoom) + " " + source_dir + _file + " " + dest_dir + match.group() 
         system(create_tile)
     print("Created raster tiles for " + region + "using files in " + source + "and outputting to " + dest)
     

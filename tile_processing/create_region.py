@@ -46,6 +46,10 @@ def create_region_subdirs(region):
     except FileExistsError as e:
         print("File Exists" + str(e))
     try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + MODELTIFF)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
         os.makedirs(TILE_PICTURE_LOCATIONS + region + GEOTIFF)
     except FileExistsError as e:
         print("File Exists" + str(e))
