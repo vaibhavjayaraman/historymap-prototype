@@ -41,14 +41,6 @@ def create_region_subdirs(region):
     except FileExistsError as e:
         print("File Exists" + str(e))
     try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + EDGE)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + TEXT)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
         os.makedirs(TILE_PICTURE_LOCATIONS + region + TRANSLATED_PNG)
     except FileExistsError as e:
         print("File Exists" + str(e))
@@ -61,10 +53,6 @@ def create_region_subdirs(region):
     except FileExistsError as e:
         print("File Exists" + str(e))
     try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + REFTIFF)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
         os.makedirs(TILE_PICTURE_LOCATIONS + region + INTERTIFF)
     except FileExistsError as e:
         print("File Exists" + str(e))
@@ -73,47 +61,11 @@ def create_region_subdirs(region):
     except FileExistsError as e:
         print("File Exists" + str(e))
     try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + MODELTIFF)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
         os.makedirs(TILE_PICTURE_LOCATIONS + region + GEOTIFF)
     except FileExistsError as e:
         print("File Exists" + str(e))
     try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + TIFF)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + VRT)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
         os.makedirs(TILE_PICTURE_LOCATIONS + region + RASTER_TILES)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + VECTOR_TILES)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + TRANSPARENT_TIFF)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + ORIGINAL_SVG)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + GEOJSON)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + LEGEND_MASK)
-    except FileExistsError as e:
-        print("File Exists" + str(e))
-    try:
-        os.makedirs(TILE_PICTURE_LOCATIONS + region + LEGENDS)
     except FileExistsError as e:
         print("File Exists" + str(e))
     
