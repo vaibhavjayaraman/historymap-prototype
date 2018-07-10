@@ -9,12 +9,21 @@ function addRegionTiles(region, year) {
 	}).addTo(tile_overlay);
 }
 
+function addRegionTilestest(region, year, port) {
+	tile = L.tileLayer("http://oilspill.ocf.berkeley.edu:" + port + "/" + year + "/{z}/{x}/{y}.png", {
+		tms: true, 
+		opacity: opacity,
+		className : region,
+	}).addTo(tile_overlay);
+}
+
 /**Add functionality that will allow one to add and remove individual tile overlays **/
 
 function addTiles(year) {
 	//if switching to vector tiles, use L.TileLayer.MVTSource
 	tile_overlay = L.layerGroup().addTo(map);
 	addRegionTiles("iberia", year);
+	//addRegionTilestest("mediaeval_middle_east", year, "7000");
 }
 
 

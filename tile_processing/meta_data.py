@@ -4,10 +4,10 @@ from osgeo import gdal
 from os import system, listdir, chmod, remove
 from create_region import TILE_PICTURE_LOCATIONS
 from create_region import ORIGINAL
-from create_region import GEOTIFF
+from create_region import REFTIFF, GEOTIFF, INTERTIFF
 from create_region import TIFF
 from create_region import MASKED
-from create_region import MODELTIFF
+from create_region import MODELTIFF, TRANSPARENT_TIFF, TRANSPARENT_PNG, TRANSLATED_PNG, TRANSLATE_FILE
 from tqdm import tqdm
 
 def translate_png_to_tiff(region, source = MASKED, dest = TIFF):
@@ -22,24 +22,37 @@ def translate_png_to_tiff(region, source = MASKED, dest = TIFF):
             system("gdal_translate -scale " + source_dir + _file + " " + dest_dir + _file[:ext_index] + ".tiff")
     print("Translated png to tiff")
 
-def geotiff_create(region, source = MASKED, dest = GEOTIFF):
+def geotiff_create(region, source = TRANSPARENT_PNG, trans = TRANSLATED_PNG, inter = INTERTIFF, dest = GEOTIFF, translatefile = TRANSLATE_FILE):
     """takes metadata from data_source in the GEOTIFF folder for a region and creates new geotiff files based off data_source metadata."""
     source_folder = TILE_PICTURE_LOCATIONS + region + source
     dest_folder = TILE_PICTURE_LOCATIONS + region + dest
+    inter_folder = TILE_PICTURE_LOCATIONS + region + inter
+    trans_folder = TILE_PICTURE_LOCATIONS + region + trans
+    translate_file = TILE_PICTURE_LOCATIONS + region + translatefile
     for _file in tqdm(listdir(source_folder)):
         sourcepath = source_folder + _file
-        inter_path = dest_folder + _file
-        ext_index = _file.find(".png")
-        #assumes that there will be no -1 indexes (.png will always be found)
-        destpath = dest_folder + _file[:ext_index] + ".tif"
-        translate = "gdal_translate -of GTiff -gcp 567.344 496.649 4.00783e+06 4.42978e+06 -gcp 391.051 1127.79 3.89327e+06 3.44496e+06 -gcp 1595.33 290.84 5.60473e+06 4.91106e+06 -gcp 164.791 32.1259 3.23639e+06 5.03231e+06 -gcp 1562.15 1131.46 5.57244e+06 3.53e+06 -gcp 447.23 586.995 3.84236e+06 4.2981e+06 -gcp 1.73364 49.8788 3e+06 4.936e+06 -gcp 999.31 38.3279 4.5828e+06 5.2809e+06 " + "'"+sourcepath+"'" + " " + "'" + inter_path + "'"
-        print(translate)
+        trans_path = trans_folder + _file
+        interpath= inter_folder + _file[:_file.find(".")] + ".tif"
+        destpath = dest_folder + _file[:_file.find(".")] + ".tif"
+        with open(translate_file, 'r') as translation:
+            geo_ref = translation.read().replace('\n','')
+        translate = geo_ref + " " + "'"+sourcepath+"'" + " " + "'" + trans_path + "'"
         system(translate)
-        warp = "gdalwarp -r near -tps -co COMPRESS=NONE -dstalpha -s_srs EPSG:3857 -t_srs EPSG:3857 " + "'" + inter_path + "'" + " " + "'" + destpath + "'"
-        print(warp)
+        warp = "gdalwarp -r near -tps -co COMPRESS=NONE "+ " -overwrite " + " -s_srs EPSG:3857 -t_srs EPSG:3857 " + "'" + trans_path + "'" + " " + "'" + interpath + "'"
         system(warp)
-
+        translate =  "gdal_translate -mask 4 " + interpath + " " + destpath
     print("Migrated metadata to geotiff")
+
+def mask_geotiff(region, source = GEOTIFF, dest = TRANSPARENT_TIFF):
+    source_dir = TILE_PICTURE_LOCATIONS + region + source
+    dest_dir  = TILE_PICTURE_LOCATIONS + region + dest
+    for _file in listdir(source_dir):
+        sourcepath = source_dir + _file
+        destpath = dest_dir + _file
+        translate = "gdal_translate -mask 4 " + sourcepath + " " + destpath
+        system(translate)
+    print("masked tiffs from " + source + " to " + dest)
+
 def metadata_move(region, source = TIFF, model_folder = MODELTIFF, dest = GEOTIFF, model_file = None):
     """takes metadata from data_source in the GEOTIFF folder for a region and creates new geotiff files based off data_source metadata."""
     if model_file == None:
@@ -80,7 +93,7 @@ def get_geo_transform(region, data_file, data_folder = MODELTIFF):
     im = Image.open(modeltiff)
     return ds.GetGeoTransform(), ds.GetProjection(), ds.GetMetadata(), im.size
 
-def migrate_metadata_to_tiff(region, source = TIFF, model_folder = MODELTIFF, data_folder = GEOTIFF, data_file = None):
+def migrate_metadata_to_tiff(region, source = TIFF, model_folder = MODELTIFF, data_folder = REFTIFF, data_file = None):
     """takes metadata from data_source in the GEOTIFF folder for a region and creates new geotiff files based off data_source metadata."""
     if data_file == None:
         data_file = region + "geo.tif"

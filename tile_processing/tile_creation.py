@@ -3,15 +3,15 @@ from re import search
 from create_region import TILE_PICTURE_LOCATIONS
 from create_region import VRT
 from create_region import WRAPPED_VRT
-from create_region import GEOTIFF
+from create_region import GEOTIFF, TIFF, REFTIFF
 from create_region import RASTER_TILES 
 from create_region import VECTOR_TILES
-from create_region import TRANSPARENT_TIFF
+from create_region import TRANSPARENT_TIFF, TRANSPARENT_PNG
 from create_region import GEOJSON
 
 from tqdm import tqdm 
 
-def create_vrt_and_transparent_tiff(region, source = GEOTIFF, vrt = VRT, dest = TRANSPARENT_TIFF):
+def create_vrt_and_transparent_tiff(region, source = REFTIFF, vrt = VRT, dest = TRANSPARENT_TIFF):
     source_dir = TILE_PICTURE_LOCATIONS + region + source
     vrt_dir = TILE_PICTURE_LOCATIONS + region + vrt
     dest_dir = TILE_PICTURE_LOCATIONS + region + dest
@@ -28,7 +28,17 @@ def create_vrt_and_transparent_tiff(region, source = GEOTIFF, vrt = VRT, dest = 
         remove(file_name + ".vrt")
     print("Created Vrt Files for " + region + " using files in " + source + " and outputting to " + dest)
 
-def create_raster_tiles(region, source = TRANSPARENT_TIFF , dest = RASTER_TILES, zoom = 8):
+def store_transparent_tiff(region, source = TRANSPARENT_TIFF, dest = TRANSPARENT_PNG):
+    source_dir = TILE_PICTURE_LOCATIONS + region + source
+    dest_dir = TILE_PICTURE_LOCATIONS + region + dest
+    for _file in listdir(source_dir):
+        sourcefile = source_dir + _file
+        filename = _file[:_file.find(".")]
+        destfile = dest_dir + filename + ".png"
+        png_translate = "gdal_translate -of PNG -scale -co worldfile=yes " + sourcefile + " " + destfile
+        system(png_translate)
+
+def create_raster_tiles(region, source = GEOTIFF, dest = RASTER_TILES, zoom = 8):
     source_dir = TILE_PICTURE_LOCATIONS + region + source
     dest_dir = TILE_PICTURE_LOCATIONS + region + dest
     for _file in tqdm(listdir(source_dir)):

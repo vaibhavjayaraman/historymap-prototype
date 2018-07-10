@@ -13,6 +13,8 @@ MASKED = "/masked/"
 GEOTIFF = "/geotiff/"
 """Folder that contains non georeferenced tiffs."""
 TIFF = "/tiff/"
+INTERTIFF = "/inter_tiff/"
+REFTIFF = "/reftiff/"
 MODELTIFF = "/modeltiff/"
 TRANSPARENT_TIFF= "/transparent_tiff/"
 VRT = "/vrt/"
@@ -23,8 +25,17 @@ ORIGINAL_SVG = "/original_svg/"
 GEOJSON="/geojson/"
 LEGEND_MASK = "/legend_mask/"
 LEGENDS = "/legends/"
+TRANSPARENT_PNG = "/transparent_png/"
+TRANSLATED_PNG = "/translated_png/"
+TRANSLATE_FILE = "/translate_file.txt"
 
 def create_region_subdirs(region):
+    try:
+        _file = TILE_PICTURE_LOCATIONS + region + TRANSLATE_FILE
+        if not os.path.exists(_file):
+            open(_file).close()
+    except FileExistsError as e:
+        print("File Exists" + str(e))
     try:
         os.makedirs(TILE_PICTURE_LOCATIONS + region + ORIGINAL)
     except FileExistsError as e:
@@ -38,7 +49,23 @@ def create_region_subdirs(region):
     except FileExistsError as e:
         print("File Exists" + str(e))
     try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + TRANSLATED_PNG)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
         os.makedirs(TILE_PICTURE_LOCATIONS + region + MASK)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + TRANSPARENT_PNG)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + REFTIFF)
+    except FileExistsError as e:
+        print("File Exists" + str(e))
+    try:
+        os.makedirs(TILE_PICTURE_LOCATIONS + region + INTERTIFF)
     except FileExistsError as e:
         print("File Exists" + str(e))
     try:
