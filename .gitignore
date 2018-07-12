@@ -8,4 +8,5 @@ historymap/main/migrations
 *__pycache__*
 *.sw?
 *raster_tiles*
-*test_pictures*
+*tiff*
+*.png*

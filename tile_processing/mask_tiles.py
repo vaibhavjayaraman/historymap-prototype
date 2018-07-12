@@ -10,7 +10,7 @@ from create_region import ORIGINAL
 from tqdm import tqdm
 
 
-def create_masked_png(region, filename, sparse, mask = "mask.png"):
+def mask_images(region, filename, mask = "mask.png"):
     """Uses bitwise and on mask and year to create tile of the parts of the region that are wanted. 
     @param region - name of directory wanted 
     @param filename- full file name containing map of region for particular year
@@ -21,20 +21,16 @@ def create_masked_png(region, filename, sparse, mask = "mask.png"):
     msk = cv2.imread(TILE_PICTURE_LOCATIONS + region + MASK + region + mask, 0) 
     masked = cv2.bitwise_and(img, img, mask = msk)
     cv2.imwrite(TILE_PICTURE_LOCATIONS + region + MASKED + filename, masked)
+    print("masked  PNG ")
 
-def make_transparent_png(region, source = MASKED, dest = TRANSPARENT_PNG):
+def make_transparent_png(region, _file, source = MASKED, dest = TRANSPARENT_PNG):
     source_dir = TILE_PICTURE_LOCATIONS + region + source
     dest_dir = TILE_PICTURE_LOCATIONS + region + dest
-    for _file in tqdm(listdir(source_dir)):
-        sourcefile = source_dir + _file
-        destfile = dest_dir + _file
-        convert = "convert " + sourcefile + " -transparent black -alpha on " + destfile
-        system(convert)
-    print("Made pngs transparent from " + source + " to " + dest)
+    sourcefile = source_dir + _file
+    destfile = dest_dir + _file
+    convert = "convert " + sourcefile + " -transparent black -alpha on " + destfile
+    system(convert)
+    print("Made png transparent from " + source + " to " + dest)
 
-def mask_images(region):
-    for _file in tqdm(listdir(TILE_PICTURE_LOCATIONS + region + ORIGINAL)):
-        create_masked_png(region, _file, sparse)
-    print("masked all PNGS in region")
 
 

@@ -1,16 +1,9 @@
 var tile_overlay = null;
 var opacity = .7;
 
-function addRegionTiles(region, year) {
-	tile = L.tileLayer("http://oilspill.ocf.berkeley.edu:2000/" + region + "/" + year + "/{z}/{x}/{y}.png", {
-		tms: true, 
-		opacity: opacity,
-		className : region,
-	}).addTo(tile_overlay);
-}
 
-function addRegionTilestest(region, year, port) {
-	tile = L.tileLayer("http://oilspill.ocf.berkeley.edu:" + port + "/" + year + "/{z}/{x}/{y}.png", {
+function addRegionTiles(region, year, url = "http://oilspill.ocf.berkeley.edu:2000") {
+	tile = L.tileLayer(url + "/" +  region + "/" +  year + "/{z}/{x}/{y}.png", {
 		tms: true, 
 		opacity: opacity,
 		className : region,
@@ -23,9 +16,15 @@ function addTiles(year) {
 	//if switching to vector tiles, use L.TileLayer.MVTSource
 	tile_overlay = L.layerGroup().addTo(map);
 	addRegionTiles("iberia", year);
-	//addRegionTilestest("mediaeval_middle_east", year, "7000");
+	addRegionTiles("mediaeval_middle_east");
 }
 
+
+function addLegends(year) {
+	//if switching to vector tiles, use L.TileLayer.MVTSource
+	addRegionTiles("iberia", year);
+	addRegionTiles("mediaeval_middle_east", year);
+}
 
 /** Supress 404 errors that arise when tileserver does not have specified tile */ 
 map.on('error', e => {

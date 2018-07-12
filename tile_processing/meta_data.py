@@ -11,24 +11,25 @@ from create_region import MODELTIFF, TRANSPARENT_TIFF, TRANSPARENT_PNG, TRANSLAT
 from tqdm import tqdm
 
 
-def geotiff_create(region, source = TRANSPARENT_PNG, trans = TRANSLATED_PNG, inter = INTERTIFF, dest = GEOTIFF, translatefile = TRANSLATE_FILE):
+def geotiff_create(region, _file, source = TRANSPARENT_PNG, trans = TRANSLATED_PNG, inter = INTERTIFF, dest = GEOTIFF, translatefile = TRANSLATE_FILE):
     """takes metadata from data_source in the GEOTIFF folder for a region and creates new geotiff files based off data_source metadata."""
     source_folder = TILE_PICTURE_LOCATIONS + region + source
     dest_folder = TILE_PICTURE_LOCATIONS + region + dest
     inter_folder = TILE_PICTURE_LOCATIONS + region + inter
     trans_folder = TILE_PICTURE_LOCATIONS + region + trans
     translate_file = TILE_PICTURE_LOCATIONS + region + translatefile
-    for _file in tqdm(listdir(source_folder)):
-        sourcepath = source_folder + _file
-        trans_path = trans_folder + _file
-        interpath= inter_folder + _file[:_file.find(".")] + ".tif"
-        destpath = dest_folder + _file[:_file.find(".")] + ".tif"
-        with open(translate_file, 'r') as translation:
-            geo_ref = translation.read().replace('\n','')
-        translate = geo_ref + " " + "'"+sourcepath+"'" + " " + "'" + trans_path + "'"
-        system(translate)
-        warp = "gdalwarp -r near -tps -co COMPRESS=NONE "+ " -overwrite " + " -s_srs EPSG:3857 -t_srs EPSG:3857 " + "'" + trans_path + "'" + " " + "'" + interpath + "'"
-        system(warp)
-        translate =  "gdal_translate -mask 4 " + interpath + " " + destpath
-    print("Migrated metadata to geotiff")
+    sourcepath = source_folder + _file
+    trans_path = trans_folder + _file
+    interpath= inter_folder + _file[:_file.find(".")] + ".tif"
+    destpath = dest_folder + _file[:_file.find(".")] + ".tif"
+    with open(translate_file, 'r') as translation:
+        geo_ref = translation.read().replace('\n','')
+    translate = geo_ref + " " + "'"+sourcepath+"'" + " " + "'" + trans_path + "'"
+    system(translate)
+    warp = "gdalwarp -r near -tps -co COMPRESS=NONE "+ " -overwrite " + " -s_srs EPSG:3857 -t_srs EPSG:3857 " + "'" + trans_path + "'" + " " + "'" + interpath + "'"
+    system(warp)
+    translate =  "gdal_translate -mask 4 " + interpath + " " + destpath
+    mv = "mv " + interpath + " " + destpath
+    system(mv)
+    print("Migrated png to geotiff")
 
