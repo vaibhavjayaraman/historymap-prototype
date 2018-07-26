@@ -16,7 +16,7 @@ function addTiles(year) {
 	//if switching to vector tiles, use L.TileLayer.MVTSource
 	tile_overlay = L.layerGroup().addTo(map);
 	addRegionTiles("iberia", year);
-	addRegionTiles("mediaeval_middle_east");
+	addRegionTiles("mediaeval_middle_east", year);
 }
 
 
