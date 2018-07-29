@@ -6,4 +6,8 @@ const searchControl = new GeoSearchControl({
 	provider: provider, 
 }); 
 
-map.addControl(searchControl);
+
+document.getElementById("search_bar").appendChild(
+	searchControl.onAdd(map)
+);
+
