@@ -65,6 +65,7 @@ function wiki_marker_popup(marker, url, title, lat, lon) {
         	+ extract + "<\p>").openPopup();
 	}
 }
+
 function add_wiki_marker(lat, lon, pageid, title) {
 	var marker = L.marker([lat,lon]);
         marker.addTo(wiki_markers);
@@ -73,8 +74,18 @@ function add_wiki_marker(lat, lon, pageid, title) {
         marker.on('mouseover', wiki_marker_popup(marker, url, title, lat, lon)); 
 }
 
+
+var noArticleIcon = L.icon({
+	iconUrl:'main/no_wiki_article_icon' 
+});
+
+function addNoWikiMarker(lat, lon) {
+	var marker = L.marker([lat,lon], {icon: noArticleIcon}).addTo(wiki_markers);
+	marker.bindPopup('<p>There seem to be no wikipedia articles that are near this location. Perhaps adjust your search range and retry. <\p>');
+}
+
 /** Loads and places wikipedia articles on map. **/
-function wiki_call(url) {
+function wiki_call(url, lat, lng) {
     $.ajax({
         type: 'GET',
         url: url,
@@ -87,7 +98,9 @@ function wiki_call(url) {
             var parsed_data = data
             var articles = parsed_data.query.geosearch;
             if (articles.length == 0) {
-		    alert("This location does not seem to be around wikipedia articles");
+		    //later add that no article is near here to database
+		    alert("no articles");
+		    addNoWikiMarker(lat, lng);
 	    } else {
 		    for (var i = 0; i < articles.length; i++) {
 			var article = articles[i];
@@ -112,7 +125,7 @@ $(document).ready(function() {
                     "&gsradius=" + wiki_geo_search_radius + "&gslimit=" + file_return_limit +
                     "&prop=info|extracts&inprop=url" +
                     "&format=json";
-                wiki_call(url);
+                wiki_call(url, lat, lng);
         });
             $('#map').on('click', '.article', function() {
                 win = window.open(current_url, '_blank');
