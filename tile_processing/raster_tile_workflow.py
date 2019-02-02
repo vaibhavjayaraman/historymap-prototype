@@ -1,4 +1,4 @@
-from create_region import create_region, ORIGINAL, TILE_PICTURE_LOCATIONS, GEOTIFF, INTERTIFF, MASKED, TRANSPARENT_PNG
+from create_region import create_region, ORIGINAL, TILE_PICTURE_LOCATIONS, GEOTIFF, INTERTIFF, MASKED, TRANSPARENT_PNG, TRANSLATED_PNG
 from mask_tiles import mask_images, make_transparent_png
 from meta_data import geotiff_create
 from tile_creation import create_raster_tiles
@@ -34,3 +34,4 @@ def generate_tiles(region, delete_used_dir = True):
             delete_directory_contents(region, GEOTIFF)
             delete_directory_contents(region, TRANSPARENT_PNG)
             delete_directory_contents(region, INTERTIFF)
+            delete_directory_contents(region, TRANSLATED_PNG)
