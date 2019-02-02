@@ -1,6 +1,4 @@
-from create_region import create_region, ORIGINAL
-from create_region import TILE_PICTURE_LOCATIONS
-from create_region import GEOTIFF, INTERTIFF, MASKED, TRANSPARENT_PNG
+from create_region import create_region, ORIGINAL, TILE_PICTURE_LOCATIONS, GEOTIFF, INTERTIFF, MASKED, TRANSPARENT_PNG
 from mask_tiles import mask_images, make_transparent_png
 from meta_data import geotiff_create
 from tile_creation import create_raster_tiles

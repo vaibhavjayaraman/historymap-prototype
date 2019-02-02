@@ -137,6 +137,7 @@ DEBUG = conf.get('django', 'debug')
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+"""
 DATABASES = {
         'default': {
             'ENGINE': conf.get('mysql', 'engine'), 
@@ -150,3 +151,4 @@ DATABASES = {
             'PORT': conf.get('mysql', 'port'),
             }
         }
+        """
