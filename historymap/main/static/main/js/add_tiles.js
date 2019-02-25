@@ -2,7 +2,7 @@ var tile_overlay = null;
 var opacity = .7;
 
 
-function addRegionTiles(region, year, url = "http://oilspill.ocf.berkeley.edu:2000") {
+function addRegionTiles(region, year, url = "https://worldhistorymap.io/tiles") {
 	tile = L.tileLayer(url + "/" +  region + "/" +  year + "/{z}/{x}/{y}.png", {
 		tms: true, 
 		opacity: opacity,
@@ -17,6 +17,7 @@ function addTiles(year) {
 	tile_overlay = L.layerGroup().addTo(map);
 	addRegionTiles("iberia", year);
 	addRegionTiles("mediaeval_middle_east", year);
+	addRegionTiles("northern_europe", year);
 }
 
 
@@ -26,11 +27,6 @@ function addLegends(year) {
 	addRegionTiles("mediaeval_middle_east", year);
 }
 
-/** Supress 404 errors that arise when tileserver does not have specified tile */ 
-map.on('error', e => {
-	if (e && e.error != '404 (File not found)')
-		console.error(e);
-});
 
 /** Updates page with wikipedia timeline for that year
 **/
